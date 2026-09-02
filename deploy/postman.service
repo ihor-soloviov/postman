@@ -1,0 +1,22 @@
+# systemd-юніт. Скопіювати в /etc/systemd/system/postman.service
+[Unit]
+Description=Поштар — планувальник маршрутів
+After=network.target
+
+[Service]
+Type=simple
+User=postman
+WorkingDirectory=/opt/postman
+EnvironmentFile=/opt/postman/.env
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start
+Restart=always
+RestartSec=5
+# База лежить у /opt/postman/data — більше нікуди писати не треба
+ProtectSystem=strict
+ReadWritePaths=/opt/postman/data /opt/postman/.next
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
